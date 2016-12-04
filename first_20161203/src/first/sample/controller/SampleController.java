@@ -19,7 +19,7 @@ import first.sample.service.SampleService;
 @Controller
 public class SampleController {
 	Logger log = Logger.getLogger(this.getClass());
-	//1
+	//2
 	@Resource (name="sampleService") private SampleService sampleService;
 	
 	@RequestMapping(value="/sample/openBoardList.do")
