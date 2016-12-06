@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import first.common.common.CommandMap;
+import first.common.util.PagingUtils;
 import first.sample.service.SampleService;
 
 @Controller
@@ -23,13 +24,27 @@ public class SampleController {
 	@Resource (name="sampleService") private SampleService sampleService;
 	
 	@RequestMapping(value="/sample/openBoardList.do")
-	public ModelAndView openSampleBoardList(Map<String, Object> commandMap) throws Exception {
+	public ModelAndView openSampleBoardList(Map<String, Object> commandMap, HttpServletRequest request) throws Exception {
+
 		ModelAndView mv = new ModelAndView("/sample/boardList");
 		log.debug("인터셉터 테스트");
+
+		int searchNo =  10;
+		int searchCntPerPage =  10;
+		int searchUnitPage = 10;
 		
+		commandMap.put("pageNo", request.getParameter("pageNo") == null ? 1 : request.getParameter("pageNo"));
+		commandMap.put("countPerPage", request.getParameter("countPerPage") == null ? 10 : request.getParameter("countPerPage"));
+
+		PagingUtils.setPageInfo(commandMap, 10);  //param에 Page정보 파라미터 정보 put 해주기
+		
+		int totalCnt = sampleService.selectBoardCnt(commandMap); // DB연동_ 총 갯수 구해오기
+
 		List<Map<String, Object>> list = sampleService.selectBoardList(commandMap);
 		mv.addObject("list", list);
-		
+		mv.addObject("pageNo", commandMap.get("pageNo"));
+		mv.addObject("page", PagingUtils.getPageObject(totalCnt, searchNo, searchCntPerPage, searchUnitPage ));
+
 		return mv;
 	}
 	

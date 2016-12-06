@@ -76,5 +76,11 @@ public class SampleServiceImpl implements SampleService{
 		sampleDAO.deleteBoard(map);
 	}
 
+	@Override
+	public int selectBoardCnt(Map<String, Object> map) throws Exception {
+		int result = sampleDAO.selectBoardCnt(map);
+		return  result ;
+	}
+
 
 }

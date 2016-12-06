@@ -53,5 +53,9 @@ public class SampleDAO extends AbstractDAO{
 	public void updateFile(Map<String, Object> map) throws Exception{
 		update("sample.updateFile", map);
 	}
+	
+	public int selectBoardCnt(Map<String, Object> map) throws Exception{
+		return (Integer) selectOne("sample.selectBoardCnt", map);
+	}
 
 }
